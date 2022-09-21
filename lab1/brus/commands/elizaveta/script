@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+#/ command: brus:elizaveta: "show all variables in color"
+#/ usage: rerun brus:elizaveta [options]
+#/ rerun-variables: RERUN, RERUN_VERSION, RERUN_MODULES, RERUN_MODULE_DIR
+#/ option-variables: 
+
+. "$RERUN_MODULE_DIR/lib/functions.sh" "elizaveta" || { 
+  echo >&2 "Failed loading function library." ; exit 1 ; 
+}
+
+set -o errexit -o nounset -o pipefail
+
+rerun_options_parse "$@"
+
+# Command implementation
+# ----------------------
+
+# - - -
+# Put the command implementation here.
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NONE='\033[0m'
+
+env_variables="$(env)"
+
+for var in $env_variables
+do
+  name="${var%=*}" 
+  variable="${var#*=}" 
+
+  echo -e "${RED}$name${NONE} = ${GREEN}$variable${NONE}"
+done
+# - - -
+
+# Done. Exit with last command exit status.
+exit $?
+
